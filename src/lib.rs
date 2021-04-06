@@ -152,8 +152,13 @@ impl<'de> de::Deserializer<'de> for Val {
         } else {
             let values = self
                 .1
-                .split(',')
-                .map(|v| Val(self.0.clone(), v.trim().to_owned()));
+                .split(|s| match s {
+                    ' ' | '\n' if cfg!(feature = "whitespace_delim_lists") => true,
+                    ',' if cfg!(feature = "comma_delim_lists") => true,
+                    _ => false,
+                })
+                .map(|v| Val(self.0.clone(), v.trim().to_owned()))
+                .filter(|val| cfg!(feature = "remove_emptys_from_lists") || !val.1.is_empty());
             SeqDeserializer::new(values).deserialize_seq(visitor)
         }
     }
