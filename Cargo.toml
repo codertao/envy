@@ -25,7 +25,7 @@ serde = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 
 [features]
-default = ["comma_delim_lists"]
+default = ["comma_delim_lists", "whitespace_delim_lists", "remove_emptys_from_lists"]
 whitespace_delim_lists = []
 comma_delim_lists = []
 remove_emptys_from_lists = []

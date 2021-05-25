@@ -158,7 +158,7 @@ impl<'de> de::Deserializer<'de> for Val {
                     _ => false,
                 })
                 .map(|v| Val(self.0.clone(), v.trim().to_owned()))
-                .filter(|val| cfg!(feature = "remove_emptys_from_lists") || !val.1.is_empty());
+                .filter(|val| (!cfg!(feature = "remove_emptys_from_lists")) || !val.1.is_empty());
             SeqDeserializer::new(values).deserialize_seq(visitor)
         }
     }
